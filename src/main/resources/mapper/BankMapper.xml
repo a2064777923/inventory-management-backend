@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nju.edu.erp.dao.BankDao">
+
+    <select id="getAllBank" resultType="com.nju.edu.erp.model.po.BankPO">
+        select * from bank_sheet
+    </select>
+
+    <insert id="createBankAccount" parameterType="BankPO">
+        insert into bank_sheet (name, bankNo, amount)
+        values (#{name},#{bankNo}, #{amount})
+    </insert>
+
+    <update id="editBankAccount" parameterType="BankPO">
+        update bank_sheet
+        <set>
+            <if test="name != null">`name` = #{name}, </if>
+            <if test="bankNo != null">bankNo = #{bankNo},</if>
+            <if test="amount != null">amount = #{amount},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBankAccount">
+        delete from bank_sheet where id = #{id}
+    </delete>
+</mapper>
+
