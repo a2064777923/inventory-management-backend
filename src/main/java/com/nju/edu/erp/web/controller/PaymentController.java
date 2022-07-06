@@ -30,11 +30,19 @@ public class PaymentController {
     public PaymentController(PaymentService paymentService) { this.paymentService = paymentService;}
 
     /**
-     * 獲取全部收付款單
+     * 獲取全部收款單
      */
-    @GetMapping("/getAllSheet")
+    @GetMapping("/collection-get-all")
     @Authorized(roles = {Role.ADMIN,  Role.FINANCIAL_STAFF})
-    public Response getPaymentSheet(@RequestParam(value = "state", required = false) PaymentSheetState state) {
+    public Response getAllCollection(@RequestParam(value = "state", required = false) PaymentSheetState state) {
+        return Response.buildSuccess(paymentService.getAllCollection(state));
+    }
+    /**
+     * 獲取全部付款單
+     */
+    @GetMapping("/payment-get-all")
+    @Authorized(roles = {Role.ADMIN,  Role.FINANCIAL_STAFF})
+    public Response getAllPayment(@RequestParam(value = "state", required = false) PaymentSheetState state) {
         return Response.buildSuccess(paymentService.getAllPayment(state));
     }
 
@@ -58,5 +66,23 @@ public class PaymentController {
         paymentService.createPaymentSheet(userVO, paymentVO);
         return Response.buildSuccess();
     }
+
+    /**
+     * 总经理审批收付款单
+     * @param transferSheetId 收付款单id
+     * @param state 修改后的状态("审批失败"/"审批完成")
+     */
+    @Authorized (roles = {Role.GM, Role.ADMIN})
+    @GetMapping(value = "/transfer-sheet-approval")
+    public Response collectionApproval(@RequestParam("transferSheetId") String transferSheetId,
+                                       @RequestParam("state") PaymentSheetState state)  {
+        if(state.equals(PaymentSheetState.FAILURE) || state.equals(PaymentSheetState.SUCCESS)) {
+            paymentService.approval(transferSheetId, state);
+            return Response.buildSuccess();
+        } else {
+            return Response.buildFailed("000000","操作失败"); // code可能得改一个其他的
+        }
+    }
+
 
 }

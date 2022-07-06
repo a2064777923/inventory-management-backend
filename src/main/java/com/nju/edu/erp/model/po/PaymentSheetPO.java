@@ -16,7 +16,7 @@ import java.util.Date;
 @Builder
 public class PaymentSheetPO {
     /**
-     * 进货单单据编号（格式为：JHD-yyyyMMdd-xxxxx
+     * 付款单单据编号（格式为：FKD-yyyyMMdd-xxxxx
      */
     private String id;
     /**

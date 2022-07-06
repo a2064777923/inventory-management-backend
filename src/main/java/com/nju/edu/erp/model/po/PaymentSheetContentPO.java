@@ -20,7 +20,7 @@ public class PaymentSheetContentPO {
     /**
      * 收款单id
      */
-    private String collectionSheetId;
+    private String paymentSheetId;
     /**
      * 銀行賬戶
      */

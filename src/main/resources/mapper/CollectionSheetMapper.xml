@@ -16,6 +16,25 @@
             (#{item.collectionSheetId},#{item.bankNo},#{item.amount},#{item.remark})
         </foreach>
     </insert>
+
+    <select id="findAll" resultType="com.nju.edu.erp.model.po.CollectionSheetPO">
+        select * from collection_sheet;
+    </select>
+    <select id="findAllByState" resultType="com.nju.edu.erp.model.po.CollectionSheetPO">
+        select * from collection_sheet where state = #{state}
+    </select>
+    <select id="findContentByCollectionSheetId" resultType="com.nju.edu.erp.model.po.CollectionSheetContentPO">
+        select * from collection_sheet_content where collection_sheet_id = #{collection_sheet_id}
+    </select>
+
+    <select id="findOneById" resultType="com.nju.edu.erp.model.po.CollectionSheetPO">
+        select * from collection_sheet where id=#{collectionSheetId}
+    </select>
+    <update id="updateState">
+        update collection_sheet
+        set state = #{state}
+        where id = #{collectionSheetId}
+    </update>
     <resultMap id="CollectionSheetPOMap" type="com.nju.edu.erp.model.po.CollectionSheetPO">
         <id column="id" property="id"></id>
         <result column="customer" property="customer"></result>

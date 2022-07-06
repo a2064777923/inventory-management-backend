@@ -1,5 +1,6 @@
 package com.nju.edu.erp.dao;
 
+import com.nju.edu.erp.enums.sheetState.PaymentSheetState;
 import com.nju.edu.erp.model.po.CollectionSheetContentPO;
 import com.nju.edu.erp.model.po.CollectionSheetPO;
 import org.apache.ibatis.annotations.Mapper;
@@ -33,4 +34,29 @@ public interface CollectionSheetDao {
      */
     void saveBatch(List<CollectionSheetContentPO> collectionSheetContent);
 
+    /**
+     * 获取所有收款单
+     */
+    List<CollectionSheetPO> findAll();
+    /**
+     * 依狀态获取
+     */
+    List<CollectionSheetPO> findAllByState(PaymentSheetState state);
+
+    List<CollectionSheetContentPO> findContentByCollectionSheetId(String collectionSheetId);
+
+    /**
+     * 用id获取收款单
+     * @param collectionSheetId
+     * @return
+     */
+    CollectionSheetPO findOneById(String collectionSheetId);
+
+    /**
+     * 更新狀态
+     * @param collectionSheetId
+     * @param state
+     * @return
+     */
+    int updateState(String collectionSheetId, PaymentSheetState state);
 }
