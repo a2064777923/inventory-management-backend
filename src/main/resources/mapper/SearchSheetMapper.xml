@@ -39,5 +39,18 @@
         and sr.create_time >= #{beginTime} and sr.create_time &lt;= #{endTime}
 
     </select>
+    <select id = "getPurchaseSheet" resultType="java.lang.String">
+        SELECT p.id FROM purchase_sheet p
+        WHERE p.supplier in
+        <foreach collection="customer" separator="," item="item" open="(" close=")">
+            #{item}
+        </foreach>
+        and p.create_time >= #{beginTime} and p.create_time &lt;= #{endTime}
+    </select>
+
+    <select id = "getPurchaseSheetReturn" resultType="java.lang.String">
+        SELECT p.id FROM purchase_returns_sheet p
+        WHERE p.create_time >= #{beginTime} and p.create_time &lt;= #{endTime}
+    </select>
 
 </mapper>

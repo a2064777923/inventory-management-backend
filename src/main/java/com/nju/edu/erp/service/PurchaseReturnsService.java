@@ -2,6 +2,7 @@ package com.nju.edu.erp.service;
 
 import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
 import com.nju.edu.erp.model.vo.UserVO;
+import com.nju.edu.erp.model.vo.purchase.PurchaseSheetVO;
 import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetVO;
 import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetVO;
 
@@ -29,5 +30,7 @@ public interface PurchaseReturnsService {
      * @param state 进货退货单修改后的状态
      */
     void approval(String purchaseReturnsSheetId, PurchaseReturnsSheetState state);
+
+    PurchaseReturnsSheetVO getPurchaseReturnsSheetById(String purchaseReturnSheetId);
 
 }

@@ -12,6 +12,10 @@
         update warehouse set quantity = (quantity - #{quantity})
         where batch_id = #{batchId} and pid = #{pid};
     </update>
+    <update id="addNum">
+        update warehouse set quantity = (quantity - #{quantity})
+        where batch_id = #{bid} and pid = #{pid};
+    </update>
 
 
 
@@ -28,6 +32,9 @@
     </select>
     <select id="findAll" resultType="com.nju.edu.erp.model.po.WarehousePO">
         select * from warehouse order by pid, batch_id;
+    </select>
+    <select id="getOneBID" resultType="java.lang.Integer">
+        select batch_id from warehouse where pid = #{pid} limit 1
     </select>
 
     <resultMap id="WarehousePO" type="com.nju.edu.erp.model.po.WarehousePO">

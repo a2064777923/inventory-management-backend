@@ -46,4 +46,18 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerPO findCustomerById(Integer supplier) {
         return customerDao.findOneById(supplier);
     }
+
+    public void addCustomer(CustomerVO customerVO){
+        customerDao.addCustomer(customerVO);
+    }
+    public void deleteCustomer(Integer id){
+        if(findCustomerById(id)!=null){
+            customerDao.deleteCustomer(id);
+        }
+    }
+
+    @Override
+    public Integer getLevel(Integer id){
+        return customerDao.getLevel(id);
+    }
 }

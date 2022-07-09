@@ -31,4 +31,8 @@ public interface WarehouseDao {
      * @return 所有库存
      */
     List<WarehousePO> findAll();
+
+    Integer getOneBID(String pid);
+
+    void addNum(String pid,Integer bid,Integer quantity);
 }

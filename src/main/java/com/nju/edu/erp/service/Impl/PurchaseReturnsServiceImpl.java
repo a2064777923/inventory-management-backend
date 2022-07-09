@@ -8,6 +8,8 @@ import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
 import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
 import com.nju.edu.erp.model.vo.UserVO;
+import com.nju.edu.erp.model.vo.purchase.PurchaseSheetContentVO;
+import com.nju.edu.erp.model.vo.purchase.PurchaseSheetVO;
 import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetContentVO;
 import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetVO;
 import com.nju.edu.erp.model.vo.warehouse.WarehouseInputFormContentVO;
@@ -187,5 +189,27 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
                 customerService.updateCustomer(customer);
             }
         }
+    }
+    /**
+     * 根据进货单Id搜索进货单信息
+     * @param purchaseReturnsSheetId 进货单Id
+     * @return 进货单全部信息
+     */
+    @Override
+    public PurchaseReturnsSheetVO getPurchaseReturnsSheetById(String purchaseReturnsSheetId) {
+        PurchaseReturnsSheetPO purchaseReturnsSheetPO = purchaseReturnsSheetDao.findOneById(purchaseReturnsSheetId);
+        if(purchaseReturnsSheetPO == null) return null;
+        List<PurchaseReturnsSheetContentPO> contentPO = purchaseReturnsSheetDao.findContentByPurchaseReturnsSheetId(purchaseReturnsSheetId);
+        PurchaseReturnsSheetVO pVO = new PurchaseReturnsSheetVO();
+        BeanUtils.copyProperties(purchaseReturnsSheetPO, pVO);
+        List<PurchaseReturnsSheetContentVO> purchaseReturnsSheetContentVOList = new ArrayList<>();
+        for (PurchaseReturnsSheetContentPO content:
+                contentPO) {
+            PurchaseReturnsSheetContentVO pContentVO = new PurchaseReturnsSheetContentVO();
+            BeanUtils.copyProperties(content, pContentVO);
+            purchaseReturnsSheetContentVOList.add(pContentVO);
+        }
+        pVO.setPurchaseReturnsSheetContent(purchaseReturnsSheetContentVOList);
+        return pVO;
     }
 }

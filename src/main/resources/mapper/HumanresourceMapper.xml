@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nju.edu.erp.dao.HumanresourceDao">
+    <insert id="createCheck" parameterType="com.nju.edu.erp.model.vo.humanResource.CheckVO">
+        insert into checkinformance (`name`,`role`,`checktime`)
+        values (#{name},#{role},#{checktime})
+    </insert>
+    <select id="showDateChecks" resultType="com.nju.edu.erp.model.po.CheckPO">
+        select distinct * from checkinformance where `checktime` = #{checktime}
+    </select>
+    <select id="showDateUncheck" resultType="com.nju.edu.erp.model.po.UncheckPO">
+        select user.name,user.role from user where ((user.name,user.role)not in(SELECT distinct name,role FROM checkinformance WHERE checktime = #{checktime}) AND user.role != "GM")
+    </select>
+    <select id="showDateRangeCheck" resultType="com.nju.edu.erp.model.po.DateRangeCheckPO">
+        SELECT name,role,COUNT(checktime) as times FROM (Select distinct * FROM checkinformance HAVING checktime >= #{beginDate} AND #{endDate} >= checktime) as a GROUP BY name;
+    </select>
+    <insert id="createWorker" parameterType="com.nju.edu.erp.model.vo.humanResource.WorkerVO">
+        insert into staff_info (`name`,`sex`,`birthdate`,`role`,`induction_day`,`phone_num`,`email`,`salary_card`)
+        values (#{name},#{sex},#{birthday},#{role},#{inductionday},#{phone},#{email},#{salarycard})
+    </insert>
+    <select id="getAllWorkers" resultType="com.nju.edu.erp.model.po.WorkerPO">
+        select distinct * from staff_info
+    </select>
+    <insert id="createPostInformance" parameterType="com.nju.edu.erp.model.vo.humanResource.PostInformanceVO">
+        insert into post_informance (`post_name`,`basic_salary`,`post_salary`,`role`,`salary_cal`,`salary_grant`,`tax`)
+        values (#{postname},${basicsalary},${postsalary},#{role},#{salarycalculation},#{salarygrant},${tax})
+    </insert>
+    <select id="getAllPosts" resultType="com.nju.edu.erp.model.po.PostInformancePO">
+        select distinct * from post_informance
+    </select>
+    <insert id="createSalaryList" parameterType="com.nju.edu.erp.model.vo.humanResource.SalaryListVO">
+        insert into staff_wage (`name`,`role`,`basic_wage`,`role_wage`,`commission`,`bonus`,`uncheck`,`wage_pay_method`,`final_wage`,`state`)
+        values (#{name},#{role},${basicsalary},${postsalary},${commission},${bonus},${uncheck},#{grantway},${realsalary},#{state})
+    </insert>
+    <select id="getSalaryList" resultType="com.nju.edu.erp.model.vo.humanResource.SalaryListVO">
+        select distinct * from staff_wage where name = #{name} and role = #{role}
+    </select>
+    <insert id="createSalaryStrategy" parameterType="com.nju.edu.erp.model.vo.humanResource.SalaryStrategyVO">
+        insert into salary_strategy (`role`,`basic_salary`,`post_salary`,`commission`,`punishmentrate`)
+        values (#{role},${basicsalary},${postsalary},${commission},${punishmentrate})
+    </insert>
+    <select id="getSalaryStrategy" resultType="com.nju.edu.erp.model.vo.humanResource.SalaryStrategyVO">
+        select distinct * from salary_strategy where role = #{role}
+    </select>
+</mapper>

@@ -12,7 +12,8 @@ public interface CustomerService {
      * @param customerPO 客户信息
      */
     void updateCustomer(CustomerPO customerPO);
-
+    void addCustomer(CustomerVO customerVO);
+    void deleteCustomer(Integer id);
     /**
      * 根据type查找对应类型的客户
      * @param type 客户类型
@@ -22,4 +23,6 @@ public interface CustomerService {
 
 
     CustomerPO findCustomerById(Integer supplier);
+
+    Integer getLevel(Integer id);
 }

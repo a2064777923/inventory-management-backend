@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nju.edu.erp.dao.SaleReturnsSheetDao">
+    <insert id="saveReturnsSheet" parameterType="SaleReturnsSheetPO">
+        insert into sale_returns_sheet (id, sale_sheet_id, operator, `state`,create_time,  discount, voucher_amount,total_amount,remark)
+        values (#{id},#{saleSheetId},#{operator}, #{state}, #{createTime},  #{discount},#{voucherAmount},#{totalAmount},#{remark}) ;
+    </insert>
+
+    <update id="updateReturnsSheetState">
+        update sale_returns_sheet
+        set state = #{state}
+        where id = #{saleReturnsSheetId}
+    </update>
+
+    <update id="updateReturnsSheetStateOnPrev">
+        update sale_returns_sheet
+        set state = #{state}
+        where id = #{saleReturnsSheetId} and state = #{prevState}
+    </update>
+
+    <select id="getLatestReturnsSheet" resultMap="SaleReturnsSheetPO">
+        select * from sale_returns_sheet order by id desc limit 0,1 ;
+    </select>
+    <select id="findAllReturnsSheet" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetPO">
+        select * from sale_returns_sheet;
+    </select>
+    <select id="findallReturnsByState" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetPO">
+        select * from sale_returns_sheet where state = #{state}
+    </select>
+    <select id="findReturnsSheetById" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetPO">
+        select * from sale_returns_sheet where id=#{saleReturnsSheetId}
+    </select>
+    <select id="findContentBySaleReturnsSheetId" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetContentPO">
+        select * from sale_returns_sheet_content where sale_returns_sheet_id = #{sale_returns_sheet_id}
+    </select>
+
+    <select id="findReturnsContentBySheetId" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetContentPO">
+        select * from sale_returns_sheet_content where sale_returns_sheet_id = #{sale_returns_sheet_id}
+    </select>
+    <select id="getSRSByTime" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetPO">
+        select * from sale_returns_sheet where
+        sale_returns_sheet.create_time <![CDATA[<=]]> #{e}
+        and sale_returns_sheet.create_time <![CDATA[>=]]> #{b}
+    </select>
+    <select id="getSRSByOperator" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetPO">
+        select * from sale_returns_sheet where operator=#{o}
+    </select>
+    <select id="getSRSBySupplier" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetPO">
+        select sale_returns_sheet.id,sale_returns_sheet.sale_sheet_id,sale_returns_sheet.operator,sale_returns_sheet.state,
+        sale_returns_sheet.create_time,sale_returns_sheet.discount,sale_returns_sheet.voucher_amount,
+        sale_returns_sheet.total_amount,sale_returns_sheet.remark from sale_returns_sheet,sale_sheet
+        where sale_returns_sheet.sale_sheet_id=sale_sheet.id and sale_sheet.supplier = #{c}
+    </select>
+    <select id="getSRSByTimeEX" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetPO">
+        select * from sale_returns_sheet where
+        sale_returns_sheet.create_time <![CDATA[<=]]> #{e}
+        and sale_returns_sheet.create_time <![CDATA[>=]]> #{b}
+        and `state` = "审批完成"
+    </select>
+
+    <insert id="saveBatchReturnsSheetContent" useGeneratedKeys="true" keyProperty="id">
+        insert into sale_returns_sheet_content (sale_returns_sheet_id, pid, quantity, unit_price, total_price, remark) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.saleReturnsSheetId},#{item.pid},#{item.quantity},#{item.unitPrice},#{item.totalPrice},#{item.remark})
+        </foreach>
+    </insert>
+
+    <resultMap id="SaleReturnsSheetPO" type="com.nju.edu.erp.model.po.SaleReturnsSheetPO">
+        <result column="id" property="id"></result>
+        <result column="sale_sheet_id" property="saleSheetId"></result>
+        <result column="operator" property="operator"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="state" property="state"></result>
+        <result column="remark" property="remark"></result>
+        <result column="voucher_amount" property="voucherAmount"></result>
+        <result column="total_amount" property="totalAmount"></result>
+        <result column="discount" property="discount"></result>
+    </resultMap>
+
+    <resultMap id="SaleReturnsSheetContentPO" type="com.nju.edu.erp.model.po.SaleReturnsSheetContentPO">
+        <result column="id" property="id"></result>
+        <result column="pid" property="pid"></result>
+        <result column="remark" property="remark"></result>
+        <result column="sale_return_sheet_id" property="saleReturnsSheetId"></result>
+        <result column="quantity" property="quantity"></result>
+        <result column="unit_price" property="unitPrice"></result>
+        <result column="total_price" property="totalPrice"></result>
+    </resultMap>
+
+
+</mapper>

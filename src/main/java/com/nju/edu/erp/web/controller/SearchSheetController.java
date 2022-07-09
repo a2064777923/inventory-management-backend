@@ -4,6 +4,7 @@ import com.nju.edu.erp.auth.Authorized;
 import com.nju.edu.erp.enums.Role;
 import com.nju.edu.erp.model.vo.financial.SalarySheetVO;
 import com.nju.edu.erp.model.vo.financial.SalesSearchVO;
+import com.nju.edu.erp.model.vo.financial.SearchSheetVO;
 import com.nju.edu.erp.service.SaleService;
 import com.nju.edu.erp.service.SearchSheetService;
 import com.nju.edu.erp.web.Response;
@@ -35,5 +36,19 @@ public class SearchSheetController {
     public Response getSalesDetails(@RequestBody SalesSearchVO salesSearchVO){
 
         return Response.buildSuccess(searchSheetService.getSalesDetails(salesSearchVO));
+    }
+
+    @PostMapping(value = "/get-purchase-sheet")
+    @Authorized(roles = {Role.FINANCIAL_STAFF, Role.GM, Role.ADMIN})
+    public Response getPurchaseSheet(@RequestBody SearchSheetVO searchSheetVO){
+
+        return Response.buildSuccess(searchSheetService.getPurchaseSheet(searchSheetVO));
+    }
+
+    @PostMapping(value = "/get-purchase-return-sheet")
+    @Authorized(roles = {Role.FINANCIAL_STAFF, Role.GM, Role.ADMIN})
+    public Response getPurchaseSheetReturn(@RequestBody SearchSheetVO searchSheetVO){
+
+        return Response.buildSuccess(searchSheetService.getPurchaseSheetReturn(searchSheetVO));
     }
 }

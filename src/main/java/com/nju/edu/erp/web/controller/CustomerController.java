@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping(path = "/api/customer")
+@RequestMapping(path = "/customer")
 public class CustomerController {
     private final CustomerService customerService;
 
@@ -21,6 +21,18 @@ public class CustomerController {
     @GetMapping("/findByType")
     public Response findByType(@RequestParam CustomerType type) {
         return Response.buildSuccess(customerService.getCustomersByType(type));
+    }
+
+    @PostMapping("/create")
+    public Response addCustomer(@RequestBody CustomerVO customerVO){
+        customerService.addCustomer(customerVO);
+        return Response.buildSuccess();
+    }
+
+    @DeleteMapping("/delete")
+    public Response deleteCustomer(@RequestParam Integer id){
+        customerService.deleteCustomer(id);
+        return Response.buildSuccess();
     }
 
 }

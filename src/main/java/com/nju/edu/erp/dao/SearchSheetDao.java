@@ -3,6 +3,8 @@ package com.nju.edu.erp.dao;
 import com.nju.edu.erp.model.po.User;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.financial.SalesDetailVO;
+import com.nju.edu.erp.model.vo.purchase.PurchaseSheetVO;
+import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -23,4 +25,8 @@ public interface SearchSheetDao {
     List<User> getAllSalesmen();
 
     List<SalesDetailVO> getSalesDetails(Date beginTime, Date endTime, @Param("productName")List<String> productName, @Param("customer") List<String> customer, @Param("salesman")List<String> salesmen);
+
+    List<String> getPurchaseSheet(Date beginTime, Date endTime, @Param("customer") List<String> customer);
+
+    List<String> getPurchaseSheetReturn(Date beginTime, Date endTime);
 }
