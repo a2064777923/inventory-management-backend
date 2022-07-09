@@ -25,7 +25,7 @@ public class BankController {
             this.bankService = bankService;
     }
     @GetMapping("/getAllBank")
-    @Authorized(roles = {Role.ADMIN,  Role.FINANCIAL_STAFF})
+    @Authorized(roles = {Role.ADMIN, Role.GM, Role.FINANCIAL_STAFF})
     public Response getAllBank() {
         return Response.buildSuccess(bankService.getAllBank());
     }

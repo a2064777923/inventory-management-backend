@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nju.edu.erp.dao.SearchSheetDao">
+
+    <select id="getAllSalesmen" resultType="com.nju.edu.erp.model.po.User">
+        select * from user where `role` = 'SALE_STAFF' or `role` = 'SALE_MANAGER'
+    </select>
+    <select id = "getSalesDetails" resultType="com.nju.edu.erp.model.vo.financial.SalesDetailVO">
+        SELECT ('sales')as state,sc.id as id , p.name as name ,p.type as type,sc.quantity as quantity, sc.unit_price as unitPrice, sc.total_price as totalPrice, s.create_time as createTime
+        FROM sale_sheet s, sale_sheet_content sc, product p
+        WHERE s.id = sc.sale_sheet_id and sc.pid = p.id and s.supplier in
+        <foreach collection="customer" separator="," item="item" open="(" close=")">
+            #{item}
+        </foreach>
+        and s.salesman in
+        <foreach collection="salesman" separator="," item="item" open="(" close=")">
+            #{item}
+        </foreach>
+        and p.name in
+        <foreach collection="productName" separator="," item="item" open="(" close=")">
+            #{item}
+        </foreach>
+        and s.create_time >= #{beginTime} and s.create_time &lt;= #{endTime}
+        UNION ALL
+        SELECT ('return')as state,src.id as id , p.name as name ,p.type as type,src.quantity as quantity, src.unit_price as unitPrice, src.total_price as totalPrice, sr.create_time as createTime
+        FROM sale_sheet sr, sale_sheet_content src, product p
+        WHERE sr.id = src.sale_sheet_id and src.pid = p.id and sr.supplier in
+        <foreach collection="customer" separator="," item="item" open="(" close=")">
+            #{item}
+        </foreach>
+        and sr.salesman in
+        <foreach collection="salesman" separator="," item="item" open="(" close=")">
+            #{item}
+        </foreach>
+        and p.name in
+        <foreach collection="productName" separator="," item="item" open="(" close=")">
+            #{item}
+        </foreach>
+        and sr.create_time >= #{beginTime} and sr.create_time &lt;= #{endTime}
+
+    </select>
+
+</mapper>

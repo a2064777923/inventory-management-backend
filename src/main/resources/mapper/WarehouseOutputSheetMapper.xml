@@ -35,7 +35,7 @@
     2.出库单状态必须为"审批完成",才算是完成一次出库操作
     -->
     <select id="getWarehouseOutputProductQuantityByTime" resultType="java.lang.Integer">
-        select SUM(quantity)
+        select COALESCE(SUM(quantity),0)
         from warehouse_output_sheet_content woc
         where woc.wo_id in(
             select wo.id as id from warehouse_output_sheet wo

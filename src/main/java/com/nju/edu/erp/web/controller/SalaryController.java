@@ -38,7 +38,7 @@ public class SalaryController {
      * 獲取全部工资單
      */
     @GetMapping("/salary-sheet-all")
-    @Authorized(roles = {Role.ADMIN,  Role.FINANCIAL_STAFF})
+    @Authorized(roles = {Role.ADMIN,Role.GM,  Role.FINANCIAL_STAFF})
     public Response getAllSalary(@RequestParam(value = "state", required = false) PaymentSheetState state) {
         return Response.buildSuccess(salaryService.getAllSalary(state));
     }

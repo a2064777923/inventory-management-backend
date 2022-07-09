@@ -33,7 +33,7 @@ public class PaymentController {
      * 獲取全部收款單
      */
     @GetMapping("/collection-get-all")
-    @Authorized(roles = {Role.ADMIN,  Role.FINANCIAL_STAFF})
+    @Authorized(roles = {Role.ADMIN,  Role.GM,Role.FINANCIAL_STAFF})
     public Response getAllCollection(@RequestParam(value = "state", required = false) PaymentSheetState state) {
         return Response.buildSuccess(paymentService.getAllCollection(state));
     }
@@ -41,7 +41,7 @@ public class PaymentController {
      * 獲取全部付款單
      */
     @GetMapping("/payment-get-all")
-    @Authorized(roles = {Role.ADMIN,  Role.FINANCIAL_STAFF})
+    @Authorized(roles = {Role.ADMIN,  Role.GM,Role.FINANCIAL_STAFF})
     public Response getAllPayment(@RequestParam(value = "state", required = false) PaymentSheetState state) {
         return Response.buildSuccess(paymentService.getAllPayment(state));
     }

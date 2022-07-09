@@ -53,7 +53,7 @@
         select ('warehouse_input') as type , wi.id as sheetId, p.name as productName, c.name as categoryName, wisc.quantity as quantity, wisc.purchase_price as unitPrice,(wisc.quantity *wisc.purchase_price) as total_price,wi.create_time as createTime
         from warehouse_input_sheet wi, product p, category c, warehouse_input_sheet_content wisc
         where wi.id = wisc.wi_id and wisc.pid = p.id and p.category_id = c.id and wi.create_time >= #{beginTime} and wi.create_time &lt;= #{endTime}
-        UNION
+        UNION ALL
         select ('warehouse_output') as type , wo.id as sheetId, p.name as productName, c.name as categoryName, wosc.quantity as quantity, wosc.sale_price as unitPrice,(wosc.quantity *wosc.sale_price) as total_price,wo.create_time as createTime
         from warehouse_output_sheet wo, product p, category c, warehouse_output_sheet_content wosc
         where wo.id = wosc.wo_id and wosc.pid = p.id and p.category_id = c.id and wo.create_time >= #{beginTime} and wo.create_time &lt;= #{endTime}
@@ -70,7 +70,7 @@
 2.入库单状态必须为"审批完成",才算是完成一次入库操作
 -->
     <select id="getWarehouseInputProductQuantityByTime" resultType="java.lang.Integer">
-        select SUM(quantity)
+        select COALESCE(SUM(quantity),0)
         from warehouse_input_sheet_content wic
         where wic.wi_id in(
             select wi.id as id from warehouse_input_sheet wi
